@@ -1,16 +1,20 @@
 import {
-  ClientOnly,
   HeadContent,
   Scripts,
-  createRootRoute,
+  createRootRouteWithContext,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-
+import { Toaster } from 'sonner'
 import appCss from '../assets/css/index.css?url'
+import type { QueryClient } from '@tanstack/react-query'
+import TanStackQueryDevtools from '@/integrations/tanstack-query/devtools'
 import Navbar from '@/components/navbar'
 
-export const Route = createRootRoute({
+interface MyRouterContext {
+  queryClient: QueryClient
+}
+export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
     meta: [
       {
@@ -43,22 +47,22 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="min-h-screen flex flex-col">
         <Navbar />
-        <div className="flex flex-col  grow overflow-auto container mx-auto w- bg-white">
+        <div className="flex flex-col  grow overflow-auto container mx-auto  bg-white">
           {children}
         </div>
-        <ClientOnly>
-          <TanStackDevtools
-            config={{
-              position: 'bottom-right',
-            }}
-            plugins={[
-              {
-                name: 'Tanstack Router',
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-            ]}
-          />
-        </ClientOnly>
+        <Toaster />
+        <TanStackDevtools
+          config={{
+            position: 'bottom-right',
+          }}
+          plugins={[
+            {
+              name: 'Tanstack Router',
+              render: <TanStackRouterDevtoolsPanel />,
+            },
+            TanStackQueryDevtools,
+          ]}
+        />
         <Scripts />
       </body>
     </html>

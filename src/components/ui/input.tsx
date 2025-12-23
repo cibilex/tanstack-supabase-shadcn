@@ -38,6 +38,7 @@ const inputWrapperVariants = cva(
     [&_[data-slot=input]]:transition-colors 
     [&_[data-slot=input]]:text-foreground
     [&_[data-slot=input]]:placeholder:text-muted-foreground 
+    [&_[data-slot=input]]:placeholder:text-sm 
     [&_[data-slot=input]]:border-0 
     [&_[data-slot=input]]:bg-transparent 
     [&_[data-slot=input]]:p-0
@@ -50,10 +51,6 @@ const inputWrapperVariants = cva(
     [&_svg]:text-muted-foreground 
     [&_svg]:shrink-0
 
-    has-[[aria-invalid=true]]:border-destructive/60 
-    has-[[aria-invalid=true]]:ring-destructive/10 
-    dark:has-[[aria-invalid=true]]:border-destructive 
-    dark:has-[[aria-invalid=true]]:ring-destructive/20    
   `,
   {
     variants: {
@@ -62,9 +59,14 @@ const inputWrapperVariants = cva(
         md: 'gap-1.5 [&_svg:not([class*=size-])]:size-4',
         lg: 'gap-1.5 [&_svg:not([class*=size-])]:size-4',
       },
+      'aria-invalid': {
+        false: '',
+        true: '!border-destructive/60 !ring-destructive/10 dark:!border-destructive dark:!ring-destructive/20 [&_svg]:!text-destructive   ',
+      },
     },
     defaultVariants: {
       variant: 'md',
+      'aria-invalid': false,
     },
   },
 )
@@ -77,7 +79,13 @@ function InputWrapper({
   return (
     <div
       data-slot="input-wrapper"
-      className={cn(inputWrapperVariants({ variant }), className)}
+      className={cn(
+        inputWrapperVariants({
+          variant,
+          'aria-invalid': props['aria-invalid'],
+        }),
+        className,
+      )}
       {...props}
     />
   )

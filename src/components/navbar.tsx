@@ -1,5 +1,6 @@
 import { Spotlight } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
+import { Fragment } from 'react/jsx-runtime'
 import { Button } from './ui/button'
 import { Separator } from './ui/separator'
 import type { ButtonVariantProps } from './ui/button'
@@ -9,12 +10,12 @@ type AppLink = LinkOptions & { label: string; variant: ButtonVariantProps }
 const appLinks: Array<AppLink> = [
   {
     to: '/login',
-    label: 'Login',
+    label: 'Log in',
     variant: 'outline',
   },
   {
     to: '/register',
-    label: 'Register',
+    label: 'Sign up',
     variant: 'default',
   },
 ]
@@ -30,26 +31,22 @@ function Navbar() {
 
         <div className="flex items-center gap-3 ">
           {appLinks.map(({ label, ...link }, index) => (
-            <>
-              <Button
-                {...link}
-                key={link.to}
-                size="lg"
-                render={
-                  <Link
-                    to={link.to}
-                    activeProps={{
-                      className: '!shadow-md  shadow-foreground/30',
-                    }}
-                  >
-                    {label}
-                  </Link>
-                }
-              />
+            <Fragment key={link.to}>
+              <Link
+                type="button"
+                to={link.to}
+                activeProps={{
+                  className: '!shadow-md  shadow-foreground/30',
+                }}
+              >
+                <Button {...link} key={link.to} size="lg">
+                  {label}
+                </Button>
+              </Link>
               {index !== appLinks.length - 1 && (
                 <Separator orientation="vertical" />
               )}
-            </>
+            </Fragment>
           ))}
         </div>
       </div>
