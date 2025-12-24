@@ -10,8 +10,10 @@ export const getRouter = () => {
   const context = TanstackQuery.getContext()
   const router = createRouter({
     routeTree,
-    context,
-
+    context: {
+      ...context,
+      user: null,
+    },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
     defaultNotFoundComponent: NotFound,

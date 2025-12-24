@@ -26,7 +26,7 @@ export function AuthFormContent({
   const form = useForm({
     resolver: zodResolver(authSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
     disabled,
@@ -39,15 +39,18 @@ export function AuthFormContent({
           <CardContent>
             <FieldSet>
               <FormField
-                name="username"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl
                       render={
                         <InputWrapper>
                           <User />
-                          <Input placeholder="Username..." {...field} />
+                          <Input
+                            placeholder="Please enter your email..."
+                            {...field}
+                          />
                         </InputWrapper>
                       }
                     ></FormControl>
@@ -66,7 +69,7 @@ export function AuthFormContent({
                           <RectangleEllipsis />
                           <Input
                             type="password"
-                            placeholder="Password..."
+                            placeholder="Please enter your password..."
                             {...field}
                           />
                         </InputWrapper>
